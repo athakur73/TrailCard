@@ -11,32 +11,21 @@ import json
 
 
 def extract_all_entities(document_name):
-
-    input_file_ocred = '/upload/' + document_name
-    input_file_raw = '/upload/' + document_name
-
-    print(document_name[:-4])
+    input_file_ocred = './upload/' + document_name
+    input_file_raw = './upload/' + document_name
     print(document_name)
-
     subprocess.call([r'./trailapp/pdftotext', '-l', '0', input_file_ocred,
                      './trailapp/temp/' + document_name[:-4] + '.txt'])
-
     with open(r'./trailapp/temp/' + document_name[:-4] + '.txt', encoding='cp1252') as infile:
         contents = infile.read()
-
     with open(r'./trailapp/sintu_files/data.pkl','rb') as fd:
         data_ocr = pickle.load(fd)
-
     contents_tess = data_ocr[document_name.split('_')[1]]
-    print(contents_tess)
-
     with open(r'./trailapp/data_top_half.pkl','rb') as fd:
         data_ocr_top_half = pickle.load(fd)
 
     contents_tess_top_half = data_ocr_top_half[document_name.split('_')[1]]
-    print('./trailapp/sintu_files/docs/' + document_name.split('_')[1]+'.jpg')
     data_tess = pytesseract.image_to_data(r'./trailapp/sintu_files/docs/' + document_name.split('_')[1]+'.jpg', output_type='dict')
-
     words = set(nltk.corpus.words.words('en'))
     words = set([w.upper() for w in words])
     names = nltk.corpus.names.words()
@@ -73,7 +62,6 @@ def extract_all_entities(document_name):
     if name_candidates:
         name_entity_value = name_candidates[0]
 
-    print(name_entity_value)
     # # Rx# Entity
     x = 0
     if any(t in contents for t in ["Rx","RX","rx"]):
@@ -102,7 +90,6 @@ def extract_all_entities(document_name):
                 break
 
     rx_entity_value = temp[:-1]
-    print(rx_entity_value)
 
     # # Drug Name Entity
 
@@ -128,7 +115,6 @@ def extract_all_entities(document_name):
 
     content = contents.replace("Remove Watermark", "").replace("Wondershare PDFelement", '').split("\n")
     drug_name_entity_value = extract_drug_name(content)
-    print(drug_name_entity_value)
 
     # # NDC Entity
 
@@ -159,7 +145,6 @@ def extract_all_entities(document_name):
 
     content = contents.replace("Remove Watermark", "").replace("Wondershare PDFelement", '').split("\n")
     ndc_entity_value = extract_ndc(content)
-    print(ndc_entity_value)
 
     # # Filled Date Entity
 

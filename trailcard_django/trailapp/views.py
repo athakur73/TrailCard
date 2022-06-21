@@ -86,3 +86,81 @@ class Redact(APIView):
         }
         json_data = JSONRenderer().render(res)
         return HttpResponse(json_data, content_type='application/json')
+
+
+class ListOfFile(GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        file_list = File.objects.filter(is_delete=0)
+        file_list_array = []
+        for files in file_list:
+            fileData = File.objects.get(id=files.id)
+            file_url = fileData.file.url
+            if files.file_status == 1:
+                file_url = fileData.file.url
+            else:
+                print("file path not found")
+
+            # print(file_url)
+            file_list_array.append({
+                "id": files.id,
+                "filename": files.filename,
+                "uploaded_by": files.uploaded_by,
+                "file_status": files.file_status,
+                "Uploaded_date": files.uploaded_date,
+                "Last_modified_date": files.last_modified_date,
+                "file_url": file_url,
+            })
+        res = {
+            "message": "List of files",
+            "status": 200,
+            "data": file_list_array
+        }
+        json_data = JSONRenderer().render(res)
+        return HttpResponse(json_data, content_type='application/json')
+
+
+class FileDelete(GenericAPIView):
+    def post(self, request, *args, **kwargs):
+        file_id = request.data['file_id']
+        file_exists = File.objects.filter(id=file_id)
+        # user_id = request.data['user_id']
+        if file_exists:
+            file = File.objects.get(id=file_id)#.delete()
+            file.is_delete = True
+            file.save()
+            res = {
+                    "message": "File has deleted successfully",
+                    "status": 200,
+                }
+            json_data = JSONRenderer().render(res)
+            return HttpResponse(json_data, content_type='application/json')
+        else:
+            res = {
+                    "message": "File not yet created or already deleted",
+                    "status": 200,
+                }
+            json_data = JSONRenderer().render(res)
+            return HttpResponse(json_data, content_type='application/json')
+
+
+class FileCompare(APIView):
+    def post(self, request, *args, **kwargs):
+        file_id = request.data['file_id']
+        files_data = File.objects.filter(id=file_id)
+        f_name = files_data[0].filename
+        new_file = f_name.replace(".pdf", "")
+
+        json_data = ('./trailapp/json_outputs/' + new_file + ".json")
+        json_data = json_data[:-9]+'.json'
+
+        pdf = ('./upload/' + new_file + ".pdf")
+
+        res = {
+            "message": "Pdf and Extracted excel data",
+            "status": 200,
+            "pdf_data": pdf,
+            "json_data": json_data,
+
+        }
+        json_data = JSONRenderer().render(res)
+        return HttpResponse(json_data, content_type='application/json')
