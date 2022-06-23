@@ -78,6 +78,12 @@ class Redact(APIView):
         document_name = file_name.values()[0]['filename']
 
         extract_all_entities(document_name)
+        # Change file status
+        file_data = File.objects.get(id=file_id)
+        file_data.file_status = 2
+        file_data.last_modified_date = datetime.datetime.now()
+        file_data.last_modified_by = 1
+        file_data.save()
 
         res = {
             "message": "File extracted successfully ",
