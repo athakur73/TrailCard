@@ -14,8 +14,9 @@ def extract_all_entities(document_name):
     input_file_ocred = './upload/' + document_name
     input_file_raw = './upload/' + document_name
     print(document_name)
-    subprocess.call([r'./trailapp/pdftotext', '-l', '0', input_file_ocred,
+    subprocess.call([r'pdftotext', '-l', '0', input_file_ocred,
                      './trailapp/temp/' + document_name[:-4] + '.txt'])
+    # sudo apt-get install -y poppler-utils
     with open(r'./trailapp/temp/' + document_name[:-4] + '.txt', encoding='cp1252') as infile:
         contents = infile.read()
     with open(r'./trailapp/sintu_files/data.pkl','rb') as fd:
