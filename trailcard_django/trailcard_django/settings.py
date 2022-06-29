@@ -148,8 +148,8 @@ STATIC_URL = '/static/'
 MEDIA_URL = 'upload/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'upload/')
 
-OUTPUT_URL = 'json_outputs/'
-OUTPUT_ROOT = os.path.join(BASE_DIR, 'json_outputs/')
+OUTPUT_URL = 'trailapp/json_outputs/'
+OUTPUT_ROOT = os.path.join(BASE_DIR, 'trailapp/json_outputs/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
