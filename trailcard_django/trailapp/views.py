@@ -170,3 +170,17 @@ class FileCompare(APIView):
         }
         json_data = JSONRenderer().render(res)
         return HttpResponse(json_data, content_type='application/json')
+
+
+class FileDownload(APIView):
+    def post(self, request, *args, **kwargs):
+        file_id = request.data['file_id']
+        file_exists = File.objects.filter(id=file_id)
+        f_name = file_exists[0].filename
+        # open redacted file
+        if file_exists[0].file_status == 2:
+            file = open('./trailapp/json_outputs/' + f_name[:-8] + ".json", 'rb')
+            return FileResponse(file, as_attachment=True)
+
+        else:
+            return "File Not present"
