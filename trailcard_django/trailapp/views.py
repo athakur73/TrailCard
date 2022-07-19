@@ -3,6 +3,7 @@ import string
 import re
 import nltk
 from dateutil import parser
+import json
 import datetime
 import random
 import pandas as pd
@@ -158,14 +159,21 @@ class FileCompare(APIView):
 
         json_data = ('./trailapp/json_outputs/' + new_file + ".json")
         json_data = json_data[:-9]+'.json'
-
         pdf = ('./upload/' + new_file + ".pdf")
 
+        # converted json into csv
+        with open('./trailapp/json_outputs/'+new_file[:-4]+'.json', 'r') as f:
+            data = json.load(f)
+        df = pd.DataFrame({'count': data}).T
+        df.to_csv('./trailapp/output/'+new_file[:-4]+'.csv', index=False)
+        csv_data = './trailapp/output/'+new_file[:-4]+'.csv'
+
         res = {
-            "message": "Pdf and Extracted excel data",
+            "message": "Pdf and Extracted json and csv data",
             "status": 200,
             "pdf_data": pdf,
             "json_data": json_data,
+            "csv_data": csv_data,
 
         }
         json_data = JSONRenderer().render(res)
@@ -178,6 +186,7 @@ class FileDownload(APIView):
         file_exists = File.objects.filter(id=file_id)
         f_name = file_exists[0].filename
         # open redacted file
+
         if file_exists[0].file_status == 2:
             file = open('./trailapp/json_outputs/' + f_name[:-8] + ".json", 'rb')
             return FileResponse(file, as_attachment=True)

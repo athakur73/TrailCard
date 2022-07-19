@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/file/', include('trailapp.urls', namespace="file")),
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + \
-              static(settings.OUTPUT_URL, document_root=settings.OUTPUT_ROOT)
+              static(settings.OUTPUT_URL, document_root=settings.OUTPUT_ROOT) + \
+              static(settings.OUTPUT_CSV_URL, document_root=settings.OUTPUT_CSV_ROOT)

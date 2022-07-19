@@ -151,6 +151,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'upload/')
 OUTPUT_URL = 'trailapp/json_outputs/'
 OUTPUT_ROOT = os.path.join(BASE_DIR, 'trailapp/json_outputs/')
 
+OUTPUT_CSV_URL = 'trailapp/output/'
+OUTPUT_CSV_ROOT = os.path.join(BASE_DIR, 'trailapp/output/')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
