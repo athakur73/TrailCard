@@ -8,6 +8,7 @@ from geotext import GeoText
 import re
 from datetime import date
 import json
+import pandas as pd
 
 
 def extract_all_entities(document_name):
@@ -476,3 +477,7 @@ def extract_all_entities(document_name):
 
     with open('./trailapp/json_outputs/'+json_dict['Document'][:-4]+'.json','w') as fd:
         fd.write(json_output)
+
+    # converted json into csv
+    df = pd.DataFrame({'count': json_dict}).T
+    df.to_csv('./trailapp/output/' + json_dict['Document'][:-4] + '.csv', index=False)

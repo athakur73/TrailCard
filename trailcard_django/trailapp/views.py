@@ -161,11 +161,7 @@ class FileCompare(APIView):
         json_data = json_data[:-9]+'.json'
         pdf = ('./upload/' + new_file + ".pdf")
 
-        # converted json into csv
-        with open('./trailapp/json_outputs/'+new_file[:-4]+'.json', 'r') as f:
-            data = json.load(f)
-        df = pd.DataFrame({'count': data}).T
-        df.to_csv('./trailapp/output/'+new_file[:-4]+'.csv', index=False)
+        # # converted json into csv
         csv_data = './trailapp/output/'+new_file[:-4]+'.csv'
 
         res = {
