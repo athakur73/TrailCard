@@ -480,4 +480,4 @@ def extract_all_entities(document_name):
 
     # converted json into csv
     df = pd.DataFrame({'count': json_dict}).T
-    df.to_csv('./trailapp/output/' + json_dict['Document'][:-4] + '.csv', index=False)
+    df.to_csv('./trailapp/output/' + json_dict['Document'][:-4] + '.xlsx', index=False)

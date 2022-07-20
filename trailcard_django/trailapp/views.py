@@ -162,7 +162,7 @@ class FileCompare(APIView):
         pdf = ('./upload/' + new_file + ".pdf")
 
         # # converted json into csv
-        csv_data = './trailapp/output/'+new_file[:-4]+'.csv'
+        csv_data = './trailapp/output/'+new_file[:-4]+'.xlsx'
 
         res = {
             "message": "Pdf and Extracted json and csv data",
